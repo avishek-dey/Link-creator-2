@@ -1,52 +1,65 @@
 document.getElementById('linkForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const taskLinkValue = document.getElementById('taskLink').value;
-    const khLinkValue = document.getElementById('khLink').value;
+  const taskLinkValue = document.getElementById('taskLink').value;
+  const khLinkValue = document.getElementById('khLink').value;
 
-    // Replace 'YOUR_API_KEY' with your actual API key from shorten.rest
-    const apiKey = 'c7e437e0-2819-11ee-a6d4-f9cb5d3ad300';
-    
-    try {
-        const taskShortenedLink = await shortenLink(taskLinkValue, apiKey);
-        const khShortenedLink = await shortenLink(khLinkValue, apiKey);
+  // Replace 'YOUR_REBRANDLY_API_KEY' with your actual Rebrandly API key
+  const apiKey = '059b39384328481e98270a4388b53941';
+  
+  try {
+      // Use Promise.all to wait for both API calls to complete
+      const [taskShortenedLink, khShortenedLink] = await Promise.all([
+          shortenLinkWithRebrandly(taskLinkValue, apiKey),
+          shortenLinkWithRebrandly(khLinkValue, apiKey)
+      ]);
 
-        const taskResultElement = document.getElementById('taskResult');
-        const khResultElement = document.getElementById('khResult');
+      const taskResultElement = document.getElementById('taskResult');
+      const khResultElement = document.getElementById('khResult');
 
-        taskResultElement.innerHTML = `Task link - <a href="${taskShortenedLink}" target="_blank">${taskShortenedLink}</a>`;
-        khResultElement.innerHTML = `KH link - <a href="${khShortenedLink}" target="_blank">${khShortenedLink}</a>`;
+      taskResultElement.innerHTML = `Task link - <a href="${taskShortenedLink}" target="_blank">${taskShortenedLink}</a>`;
+      khResultElement.innerHTML = `KH link - <a href="${khShortenedLink}" target="_blank">${khShortenedLink}</a>`;
 
-        // Clear the input fields
-        document.getElementById('taskLink').value = '';
-        document.getElementById('khLink').value = '';
-    } catch (error) {
-        console.error('Error occurred while shortening links:', error);
-    }
+      // Clear the input fields
+      document.getElementById('taskLink').value = '';
+      document.getElementById('khLink').value = '';
+  } catch (error) {
+      console.error('Error occurred while shortening links:', error);
+      alert('Error occurred while shortening links. Please try again later.');
+  }
 });
 
-async function shortenLink(link, apiKey) {
-    const apiUrl = 'https://api.shorten.rest/shorten';
+async function shortenLinkWithRebrandly(link, apiKey) {
+  const apiUrl = 'https://api.rebrandly.com/v1/links';
 
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'apikey': apiKey,
-        },
-        body: JSON.stringify({
-            url: link,
-        }),
-    });
+  try {
+      const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'apikey': apiKey,
+          },
+          body: JSON.stringify({
+              destination: link,
+          }),
+      });
 
-    const data = await response.json();
-    return data.short;
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      if (data && data.shortUrl) {
+          return data.shortUrl;
+      } else {
+          throw new Error('Rebrandly API response did not contain a shortened link');
+      }
+  } catch (error) {
+      console.error('Error occurred while shortening link:', error);
+      throw error;
+  }
 }
-
-
-}
-
-// ... Same as before ...
 
 function copyResultToClipboard() {
   const taskResultText = document.getElementById('taskResult').textContent;
