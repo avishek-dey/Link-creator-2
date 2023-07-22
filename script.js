@@ -17,8 +17,8 @@ document.getElementById('linkForm').addEventListener('submit', async function(ev
       const taskResultElement = document.getElementById('taskResult');
       const khResultElement = document.getElementById('khResult');
 
-      taskResultElement.innerHTML = `Task link - <a href="${taskShortenedLink}" target="_blank">${taskShortenedLink}</a>`;
-      khResultElement.innerHTML = `KH link - <a href="${khShortenedLink}" target="_blank">${khShortenedLink}</a>`;
+      taskResultElement.innerHTML = `Task link - <a href="https://${taskShortenedLink}" target="_blank">${taskShortenedLink}</a>`;
+      khResultElement.innerHTML = `KH link - <a href="https://${khShortenedLink}" target="_blank">${khShortenedLink}</a>`;
 
       // Clear the input fields
       document.getElementById('taskLink').value = '';
@@ -28,6 +28,9 @@ document.getElementById('linkForm').addEventListener('submit', async function(ev
       alert('Error occurred while shortening links. Please try again later.');
   }
 });
+
+// Rest of the code remains the same...
+
 
 async function shortenLinkWithRebrandly(link, apiKey) {
   const apiUrl = 'https://api.rebrandly.com/v1/links';
