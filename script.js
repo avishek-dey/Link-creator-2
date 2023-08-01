@@ -37,49 +37,38 @@ window.addEventListener('load', animateTabsOnScroll);
 
 
 
-// Smooth scrolling function with friction
-function smoothScroll(target) {
-    const targetElement = document.querySelector(target);
-    if (!targetElement) return;
 
-    const startPosition = window.pageYOffset;
-    const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
-    const distance = targetPosition - startPosition;
-    const duration = 1000; // Adjust the duration of the scroll
 
-    const startTime = performance.now();
 
-    function scrollAnimation(currentTime) {
-        const elapsedTime = currentTime - startTime;
-        if (elapsedTime >= duration) {
-            window.scrollTo(0, targetPosition);
-            return;
-        }
-
-        const normalizedTime = elapsedTime / duration;
-        const easedTime = easeOutCubic(normalizedTime);
-        const scrollDistance = distance * easedTime;
-        const currentPosition = startPosition + scrollDistance;
-
-        window.scrollTo(0, currentPosition);
-        requestAnimationFrame(scrollAnimation);
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the container and elements
+    const container = document.getElementById("container");
+    const title = document.getElementById("title");
+    const bold = document.getElementById("bold");
+    const tagGroup = document.getElementById("tag-group");
+  
+    // Function to animate the elements one after another
+    function animateElements() {
+      container.style.opacity = "1";
+      container.style.transform = "translateY(0)";
+  
+      setTimeout(function () {
+        title.style.opacity = "1";
+        title.style.transform = "translateY(0)";
+      }, 300); // Delay for title animation (adjust as needed)
+  
+      setTimeout(function () {
+        bold.style.opacity = "1";
+        bold.style.transform = "translateY(0)";
+      }, 600); // Delay for bold animation (adjust as needed)
+  
+      setTimeout(function () {
+        tagGroup.style.opacity = "1";
+        tagGroup.style.transform = "translateY(0)";
+      }, 300); // Delay for tagGroup animation (adjust as needed)
     }
-
-    function easeOutCubic(t) {
-        // Easing function (cubic easing out)
-        t--;
-        return t * t * t + 1;
-    }
-
-    requestAnimationFrame(scrollAnimation);
-}
-
-// Smooth scroll when a link is clicked
-document.addEventListener('click', (event) => {
-    const target = event.target;
-    if (target.tagName === 'A' && target.getAttribute('href').startsWith('#')) {
-        event.preventDefault();
-        const targetId = target.getAttribute('href');
-        smoothScroll(targetId);
-    }
-});
+  
+    // Call the animateElements function after a short delay (adjust the delay as needed)
+    setTimeout(animateElements, 300); // 300 milliseconds delay in this example
+  });
+  
