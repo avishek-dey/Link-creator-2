@@ -318,6 +318,14 @@
         text-decoration: none;
     }
 
+    .tab {
+        
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    
     .tab a{   
         transition:200ms; 
         text-decoration: none;
@@ -329,6 +337,8 @@
         gap: 20px;
         background-color: #353535;
         border-radius: 25px;
+
+        
     }
 
     .tab a:hover{
@@ -607,3 +617,9 @@ width: 345px;
     border-radius: 10px;
 }
 }
+
+
+
+
+
+
