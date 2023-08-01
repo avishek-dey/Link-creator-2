@@ -21,6 +21,15 @@
        
 }
 
+    .scroll-container-1{ 
+       transform: translateZ(50px); 
+       transform-style: preserve-3d; 
+       width: 100vw; 
+       /* rotate: -2deg; */ 
+  
+  
+     } 
+
 @media (max-width: 1920px) {
 
  
