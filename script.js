@@ -1,3 +1,4 @@
+
 function animateTabsOnScroll() {
     const tabGroup = document.getElementById('tabGroup');
     const tabs = tabGroup.querySelectorAll('.tab');
@@ -40,6 +41,7 @@ window.addEventListener('load', animateTabsOnScroll);
 
 
 
+
 document.addEventListener("DOMContentLoaded", function () {
     // Get the container and elements
     const container = document.getElementById("container");
@@ -72,3 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(animateElements, 300); // 300 milliseconds delay in this example
   });
   
+
+  let card = document.querySelector('.content');
+
+  document.addEventListener('mousemove', function(e) {
+    let xAxis = (window.innerWidth / 2 - e.pageX) / 20;
+    let yAxis = (window.innerHeight / 2 - e.pageY) / 20;
+    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+  });
+
