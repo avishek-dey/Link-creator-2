@@ -37,3 +37,49 @@ window.addEventListener('load', animateTabsOnScroll);
 
 
 
+// Smooth scrolling function with friction
+function smoothScroll(target) {
+    const targetElement = document.querySelector(target);
+    if (!targetElement) return;
+
+    const startPosition = window.pageYOffset;
+    const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
+    const distance = targetPosition - startPosition;
+    const duration = 1000; // Adjust the duration of the scroll
+
+    const startTime = performance.now();
+
+    function scrollAnimation(currentTime) {
+        const elapsedTime = currentTime - startTime;
+        if (elapsedTime >= duration) {
+            window.scrollTo(0, targetPosition);
+            return;
+        }
+
+        const normalizedTime = elapsedTime / duration;
+        const easedTime = easeOutCubic(normalizedTime);
+        const scrollDistance = distance * easedTime;
+        const currentPosition = startPosition + scrollDistance;
+
+        window.scrollTo(0, currentPosition);
+        requestAnimationFrame(scrollAnimation);
+    }
+
+    function easeOutCubic(t) {
+        // Easing function (cubic easing out)
+        t--;
+        return t * t * t + 1;
+    }
+
+    requestAnimationFrame(scrollAnimation);
+}
+
+// Smooth scroll when a link is clicked
+document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.tagName === 'A' && target.getAttribute('href').startsWith('#')) {
+        event.preventDefault();
+        const targetId = target.getAttribute('href');
+        smoothScroll(targetId);
+    }
+});
